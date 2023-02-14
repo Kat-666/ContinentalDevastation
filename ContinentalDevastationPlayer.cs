@@ -48,17 +48,6 @@ namespace ContinentalDevastation
 
         public static ContinentalDevastationPlayer ModPlayer(Player player) => player.GetModPlayer<ContinentalDevastationPlayer>();
 
-        public override void PreUpdate()
-        {
-            if (Main.eclipse == true)
-            {
-                if (Main.eclipse == false)
-                {
-                    eclipseOver = true;
-                }
-            }
-        }
-
         public override void OnRespawn(Player player)
         {
             if (MP_unlock && Main.netMode == NetmodeID.MultiplayerClient)
