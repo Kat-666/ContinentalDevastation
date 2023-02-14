@@ -1,0 +1,3 @@
+displayName = Continental Devastation
+author = Hephaestus
+version = 0.1.0
