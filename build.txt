@@ -1,3 +1,4 @@
 displayName = Continental Devastation
+modReferences = DBZGoatLib, DBZMODPORT, StructureHelper
 author = Hephaestus
 version = 0.1.0
