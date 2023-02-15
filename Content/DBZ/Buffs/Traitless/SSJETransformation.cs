@@ -1,4 +1,5 @@
 ﻿using DBZGoatLib;
+using DBZGoatLib.Handlers;
 using DBZGoatLib.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,7 +7,7 @@ using Terraria;
 
 namespace ContinentalDevastation.Content.DBZ.Buffs.Traitless
 {
-    internal class SSJETransformation : Transformation
+    public class SSJETransformation : Transformation
     {
 
         public override AuraData AuraData() => new AuraData("ContinentalDevastation/Assets/Textures/Effects/Animations/Aura/SSJEAura", 8, BlendState.AlphaBlend, new Color(255, 255, 255));
@@ -50,7 +51,7 @@ namespace ContinentalDevastation.Content.DBZ.Buffs.Traitless
 
         public override void SetStaticDefaults()
         {
-            damageMulti = 5f; // The Damage multiplier. 1f is 0% bonus, 1.2f is 20% bonus, 3.2f is 220% and so on.
+            damageMulti = 6f; // The Damage multiplier. 1f is 0% bonus, 1.2f is 20% bonus, 3.2f is 220% and so on.
             speedMulti = 2f; // The speed multiplier. 1f is 0% bonus 1.5f is 50% bonus, etc.
 
             // The rate at which ki is drained. You lose this much ki every TICK. 
@@ -66,6 +67,6 @@ namespace ContinentalDevastation.Content.DBZ.Buffs.Traitless
         }
         public AnimationData Anims() => new AnimationData(AuraData(), SaiyanSparks(), SoundData(), HairTexturePath());
 
-        public TransformationInfo info => new(676, "SSJE", true, "Only after triumph during the moon of solar, can one achieve this ancient power", TextColor(), CanTransform, OnTransform, PostTransform, Anims(), new Gradient(Color.DarkOrange).AddStop(0.65f, Color.DarkOrange).AddStop(0.8f, Color.White).AddStop(1f, Color.Black));
+        public TransformationInfo Info => new TransformationInfo(676, "SSJEC", true, "Super Saiyan Eclipse", TextColor(), CanTransform, OnTransform, PostTransform, Anims(), new Gradient(Color.DarkOrange).AddStop(0.65f, Color.DarkOrange).AddStop(0.8f, Color.White).AddStop(1f, Color.Black));
     }
 }

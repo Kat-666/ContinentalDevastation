@@ -27,6 +27,7 @@ namespace ContinentalDevastation
         private bool masteredMessageSSJE;
 
         public int SSJETimer;
+        public bool SSJE;
 
 
         public override void SaveData(TagCompound tag)
@@ -64,7 +65,7 @@ namespace ContinentalDevastation
                     GSSJAchieved = true;
                     MP_unlock = false;
                 }
-                if (player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate" && NPC.downedQueenBee)
+                if (Main.eclipse == true && NPC.downedQueenBee)
                 {
                     SSJEReady = true;
                     MP_unlock = false;
@@ -81,16 +82,16 @@ namespace ContinentalDevastation
                 {
                     Main.NewText("For being Death's True Incarnate You have achieved Gray Super Saiyan!", Color.Gray);
                     TransformationHandler.ClearTransformations(Player);
-                    TransformationHandler.Transform(Player, TransformationHandler.GetTransformation(ModContent.BuffType<GSSJTransformation>()).Value);
+                    TransformationHandler.Transform(Player, TransformationHandler.GetTransformation(ModContent.BuffType<GSSJTransformation>()).GetValueOrDefault());
                 }
             }
 
-            if (SSJEReady && Player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate")
+            if (SSJEReady = true )
             {
                 SSJETimer++;
                 if (SSJETimer >= 300)
                 {
-                    if (Main.rand.Next(4) == 0)
+                    if (SSJE = true)
                     {
                         SSJEAchieved = true;
                         SSJETimer = 0;
@@ -98,7 +99,8 @@ namespace ContinentalDevastation
                     else if (SSJETimer >= 300)
                     {
                         SSJETimer = 0;
-                        Main.NewText(SSJETextSelect(), (Color?)Color.DarkRed);
+                        Main.NewText("Your blood is drained from within, a deep burning lingers, you are then filled with peace, suddenly your rage escalates drasticaly.", Color.DarkRed);
+                        SSJE = true;
                     }
                 }
             }
@@ -110,7 +112,7 @@ namespace ContinentalDevastation
                 {
                     Main.NewText("Something of what seems like Eclipse origin's swirls inside of you... You let it loose.", Color.DarkOrange);
                     TransformationHandler.ClearTransformations(Player);
-                    TransformationHandler.Transform(Player, TransformationHandler.GetTransformation(ModContent.BuffType<SSJETransformation>()).Value);
+                    TransformationHandler.Transform(Player, TransformationHandler.GetTransformation(ModContent.BuffType<SSJETransformation>()).GetValueOrDefault());
                 }
             }
 
@@ -129,65 +131,51 @@ namespace ContinentalDevastation
         {
             return Main.rand.Next(2) switch
             {
-                0 => "You are filled with death, Your rage escalates.",
-                1 => "Your blood is drained from within, A deep burning lingers.",
+                0 => "you are then filled with peace, your rage escalates drasticaly.",
+                1 => "Your blood is drained from within, A deep burning lingers,",
                 _ => 0,
             };
         }
     }
 
-    public class GraySaiyanTree : TransformationTree
+    public class TraitlessTree : TransformationTree
     {
-        public override bool Complete() => true;
+        public override bool Complete() => false;
 
-        public override bool Condition(Player player)
+        public override bool Condition(Player player) => true;
+
+        public override Connection[] Connections() => new Connection[]
         {
-            if (player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate")
-            {
-                return true;
-            }
+            new Connection(1,1,0,false,new Gradient(Color.LightGreen).AddStop(0.60f, new Color(255, 56, 99)))
+        };
 
-            return false;
-        }
-
-        public override Connection[] Connections() { return null; }
-
-        public override string Name() => "Death's Transformation Tree";
+        public override string Name() => "Traitless partial tree";
 
         public bool UnlockCondition1(Player player)
-        {
-            return player.GetModPlayer<ContinentalDevastationPlayer>().GSSJAchieved && player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate";
-        }
-
-        // our condition for whether or not our Node is discoevered
-        public bool DiscoverCondition1(Player player)
-        {
-            var ModPlayer = player.GetModPlayer<ContinentalDevastationPlayer>();
-
-            // For this example, we are assuming that you know how to fetch data from Dragon Ball Terraria
-            // to fetch whether their form is unlocked or not.
-            return ModPlayer.GSSJAchieved && player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate";
-        }
-
-        public bool UnlockCondition2(Player player)
         {
             return player.GetModPlayer<ContinentalDevastationPlayer>().SSJEAchieved;
         }
 
         // our condition for whether or not our Node is discoevered
+        public bool DiscoverCondition1(Player player)
+        {
+            return true;
+        }
+
+        public bool UnlockCondition2(Player player)
+        {
+            return player.GetModPlayer<ContinentalDevastationPlayer>().GSSJAchieved && player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate";
+        }
+
         public bool DiscoverCondition2(Player player)
         {
-            var ModPlayer = player.GetModPlayer<ContinentalDevastationPlayer>();
-
-            // For this example, we are assuming that you know how to fetch data from Dragon Ball Terraria
-            // to fetch whether their form is unlocked or not.
-            return ModPlayer.SSJEAchieved;
+            return player.GetModPlayer<GPlayer>().Trait == "Death's Incarnate";
         }
 
         public override Node[] Nodes() => new Node[]
         {
-            new Node(1, 2, "GSSJ", "ContinentalDevastation/Content/DBZ/Buffs/DeathsIncarnate/GSSJTransformation", "Only after being Death's incarnate can one achieve this power.", UnlockCondition1, DiscoverCondition1),
-            new Node(3, 2, "SSJE", "ContinentalDevastation/Content/DBZ/Buffs/Traitless/SSJETransformation", "Only after one's death in the eclipse of solar, can they achieve this ancient power", UnlockCondition2, DiscoverCondition2)
+            new Node(2, 0, TransformationHandler.GetTransformation(ModContent.BuffType<SSJETransformation>()).GetValueOrDefault().buffKeyName, "ContinentalDevastation/Content/DBZ/Buffs/Traitless/SSJETransformation", "Only after one's death during the ecplise of solar, can one achieve this ancient power.", UnlockCondition1, DiscoverCondition1),
+            new Node(3, 0, TransformationHandler.GetTransformation(ModContent.BuffType<SSJETransformation>()).GetValueOrDefault().buffKeyName, "ContinentalDevastation/Content/DBZ/Buffs/DeathsIncarnate/GSSJTransformation", "Only after being Death's incarnate can one achieve this power.", UnlockCondition2, DiscoverCondition2)
         };
     }
 }

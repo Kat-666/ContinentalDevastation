@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using DBZGoatLib.UI;
 using ContinentalDevastation;
+using DBZGoatLib.Handlers;
 
 namespace ContinentalDevastation.Content.DBZ.Buffs.DeathsIncarnate
 {
@@ -75,6 +76,6 @@ namespace ContinentalDevastation.Content.DBZ.Buffs.DeathsIncarnate
 
         public AnimationData Anims() => new AnimationData(AuraData(), SaiyanSparks(), SoundData(), HairTexturePath());
 
-        public TransformationInfo info => new(676, "SSJE", true, "Only after triumph during the moon of solar, can one achieve this ancient power", TextColor(), CanTransform, OnTransform, PostTransform, Anims(), new Gradient(Color.DarkOrange).AddStop(0.65f, Color.DarkOrange).AddStop(0.8f, Color.White).AddStop(1f, Color.Black));
+        public TransformationInfo Info => new TransformationInfo(675, "GSSJ", true, "Gray Super Saiyan", TextColor(), CanTransform, OnTransform, PostTransform, Anims(), new Gradient(Color.DarkOrange).AddStop(0.65f, Color.DarkOrange).AddStop(0.8f, Color.White).AddStop(1f, Color.Black));
     }
 }
